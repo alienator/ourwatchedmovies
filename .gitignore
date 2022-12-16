@@ -1,0 +1,9 @@
+# Emcas temp files
+\#*\#
+*~
+
+# Terminal nohup
+nohup.out
+
+# Composer vendor
+vendor/
