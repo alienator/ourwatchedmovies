@@ -26,4 +26,15 @@ class MovieService
             $this->remoteRepository->find($criteria)
         );
     }
+
+    public function findById($id)
+    {
+        $movie = $this->localRepository->findById($id);
+
+        if ( $movie === NULL ) {
+            $movie = $this->remoteRepository->findById($id);
+        }
+        
+        return $movie;
+    }
 }
