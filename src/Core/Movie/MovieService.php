@@ -12,13 +12,13 @@ class MovieService
 {
     private $localRepository;
     private $remoteRepository;
-    
+
     public function __construct($localRepository, $remoteRepository)
     {
         $this->localRepository = $localRepository;
         $this->remoteRepository = $remoteRepository;
     }
-    
+
     public function find($criteria)
     {
         return array_merge(
@@ -31,10 +31,15 @@ class MovieService
     {
         $movie = $this->localRepository->findById($id);
 
-        if ( $movie === NULL ) {
+        if ($movie === NULL) {
             $movie = $this->remoteRepository->findById($id);
         }
-        
+
         return $movie;
+    }
+
+    public function add(Movie $movie): void
+    {
+        $this->localRepository->save($movie);
     }
 }
