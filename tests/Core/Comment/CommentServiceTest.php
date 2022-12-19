@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Comment service test
  */
@@ -20,10 +21,10 @@ final class CommentServiceTest extends TestCase
 
         // Expect
         $mockCommentRepository = $this->getMockBuilder(CommentRepository::class)
-                                      ->getMock();
+            ->getMock();
         $mockCommentRepository->expects($this->once())
-                              ->method('save')
-                              ->with($comment);
+            ->method('save')
+            ->with($comment);
 
         // When
         $commentServiceUnderTest = new CommentService($mockCommentRepository);
