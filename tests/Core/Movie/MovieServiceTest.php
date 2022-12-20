@@ -117,32 +117,32 @@ final class MovieServiceTest extends TestCase
         $this->assertEquals($expectedMovies, $actualMovies);
     }
 
-    public function test_it_should_add_a_movie_to_local()
+    public function test_it_should_add_a_movie_to_local_with_no_comments_or_score()
     {
         // Given
         $movie = new Movie(
             0,
-            'title',
-            'Summary',
+            'tit',
+            'something',
             '2002-2-2',
-            '/images.png',
-            7.8,
-            '2002-6-6',
-            8
+            'img.png',
+            6.6,
+            '',
+            0.0
         );
+
 
         // Expect
         $mockLocalRepository = $this->getMockBuilder(MovieRepository::class)
-                                    ->getMock();
+            ->getMock();
         $mockLocalRepository->expects($this->once())
-                            ->method('save')
-                            ->with($movie);
+            ->method('save')
+            ->with($movie);
 
         $mockRemoteRepository = $this->getMockBuilder(MovieRepository::class)
-                                     ->getMock();
+            ->getMock();
         $mockRemoteRepository->expects($this->never())
-                             ->method('save');
-
+            ->method('save');
 
         // When
         $movieServiceUnderTest = new MovieService(
