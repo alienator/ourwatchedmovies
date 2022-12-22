@@ -23,9 +23,10 @@ final class UserServiceTest extends TestCase
         // Expect
         $mockUserRepository = $this->getMockBuilder(UserRepository::class)
             ->getMock();
+
         $mockUserRepository->expects($this->once())
             ->method('save')
-                           ->with($user, hash('sha256', $password));
+            ->with($user, hash('sha256', $password));
 
         // When
         $userServiceUnderTest = new UserService($mockUserRepository);
