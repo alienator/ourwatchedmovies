@@ -8,16 +8,19 @@ namespace Core\Auth;
 
 use Core\User\UserRepository;
 use Core\Net\NetClient;
+use Core\Auth\AuthRepository;
 
 class AuthService
 {
     private UserRepository $userRepository;
     private NetClient $netClient;
+    private AuthRepository $authRepository;
 
-    public function __construct($userRepository, $netClient)
+    public function __construct($userRepository, $netClient, $authRepository)
     {
         $this->userRepository = $userRepository;
         $this->netClient = $netClient;
+        $this->authRepository = $authRepository;
     }
 
     public function login(string $email, string $password, string $dateTime)
@@ -32,6 +35,9 @@ class AuthService
                    $this->netClient->getUserAgent() . '+' . $dateTime;
             
             $token = hash('sha256', $text);
+
+            $this->authRepository->save($user, $token);
+            
             return $token;
         }
         else

@@ -9,6 +9,7 @@ use Core\User\User;
 use Core\User\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Core\Net\NetClient;
+use Core\Auth\AuthRepository;
 
 final class AuthServiceTest extends TestCase
 {
@@ -26,7 +27,7 @@ final class AuthServiceTest extends TestCase
 
         $expected = hash('sha256', $user->getId() . '+' . $ip . '+' .
             $userAgent . '+' . $dateTime);
-        
+
         // Expect
         $mockUserRepository = $this->getMockBuilder(UserRepository::class)
             ->getMock();
@@ -44,8 +45,20 @@ final class AuthServiceTest extends TestCase
             ->method('getUserAgent')
             ->willReturn($userAgent);
 
+        $mockAuthRepository = $this->getMockBuilder(AuthRepository::class)
+            ->getMock();
+
+        $mockAuthRepository->expects($this->once())
+            ->method('save')
+            ->with($user, $expected);
+
         // When
-        $authService = new AuthService($mockUserRepository, $mockNetClient);
+        $authService = new AuthService(
+            $mockUserRepository,
+            $mockNetClient,
+            $mockAuthRepository
+        );
+        
         $actual      = $authService->login($email, $pass, $dateTime);
 
         // Then
