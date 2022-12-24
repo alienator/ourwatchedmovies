@@ -4,85 +4,51 @@
  * Auth Service test
  */
 
-use PHPUnit\Framework\TestCase;
-
+use Core\Auth\AuthService;
 use Core\User\User;
 use Core\User\UserRepository;
-
-use Core\Auth\AuthService;
-use Core\Auth\SessionHelper;
+use PHPUnit\Framework\TestCase;
+use Core\Net\NetClient;
 
 final class AuthServiceTest extends TestCase
 {
     public function test_a_user_can_login()
     {
         // Given
-        $userEmail     = 'user@email.com';
-        $userPass      = '123';
-        $expected      = new User(1, 'some user', $userEmail);
-        $token         = '1+user@email.com+user-agent+IP+2022-02-02 02:02:05';
-        $tokenExpected = hash('sha512', $token);
+        $dateTime  = '2022-02-02 05:05:02';
+        $ip        = '192.168.1.1';
+        $userAgent = 'test/agent.com';
 
+        $email    = 'some@email.com';
+        $pass     = '123';
+        $expected = 'ABCD123';
+        $user     = new User(1, 'user name', $email);
+
+        $expected = hash('sha256', $user->getId() . '+' . $ip . '+' .
+            $userAgent . '+' . $dateTime);
+        
         // Expect
-        $mockSessionHelper = $this->getMockBuilder(SessionHelper::class)
-            ->getMock();
-
-        $mockSessionHelper->expects($this->once())
-            ->method('createToken')
-            ->with($token)
-            ->willReturn($tokenExpected);
-
         $mockUserRepository = $this->getMockBuilder(UserRepository::class)
             ->getMock();
-
         $mockUserRepository->expects($this->once())
             ->method('findByEmailAndPassword')
-            ->with($userEmail, hash('sha256', $userPass))
-            ->willReturn($expected);
+            ->with($email, $pass)
+            ->willReturn($user);
+
+        $mockNetClient = $this->getMockBuilder(NetClient::class)
+            ->getMock();
+        $mockNetClient->expects($this->once())
+            ->method('getIP')
+            ->willReturn($ip);
+        $mockNetClient->expects($this->once())
+            ->method('getUserAgent')
+            ->willReturn($userAgent);
 
         // When
-        $serviceUnderTest = new AuthService(
-            $mockUserRepository,
-            $mockSessionHelper
-        );
-        $actual           = $serviceUnderTest->login($userEmail, $userPass);
+        $authService = new AuthService($mockUserRepository, $mockNetClient);
+        $actual      = $authService->login($email, $pass, $dateTime);
 
         // Then
         $this->assertEquals($expected, $actual);
-        //$this->assertEquals($tokenExpected, $actualToken);
-    }
-
-    public function test_it_should_not_login_with_worng_data()
-    {
-        // Given
-        $userEmail = 'user@email.com';
-        $userPass  = 'wrong password';
-        $expected  = new User(1, 'some user', $userEmail);
-
-        // Expect
-        $mockUserRepository = $this->getMockBuilder(UserRepository::class)
-            ->getMock();
-
-        $mockUserRepository->expects($this->once())
-            ->method('findByEmailAndPassword')
-            ->with($userEmail, hash('sha256', $userPass))
-            ->willReturn(NULL);
-
-        $mockSessionHelper = $this->getMockBuilder(SessionHelper::class)
-            ->getMock();
-
-        $mockSessionHelper->expects($this->never())
-                          ->method('createToken');
-        
-        // When
-        $serviceUnderTest = new AuthService(
-            $mockUserRepository,
-            $mockSessionHelper
-        );
-        
-        $actual           = $serviceUnderTest->login($userEmail, $userPass);
-
-        // Then
-        $this->assertNotEquals($expected, $actual);
     }
 }

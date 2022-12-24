@@ -7,37 +7,34 @@
 namespace Core\Auth;
 
 use Core\User\UserRepository;
-use Core\Auth\SessionHelper;
+use Core\Net\NetClient;
 
 class AuthService
 {
     private UserRepository $userRepository;
-    private SessionHelper $sessionHelper;
+    private NetClient $netClient;
 
-    public function __construct($userRepository, $sessionHelper)
+    public function __construct($userRepository, $netClient)
     {
         $this->userRepository = $userRepository;
-        $this->sessionHelper = $sessionHelper;
+        $this->netClient = $netClient;
     }
 
-    public function login(string $userEmail, string $userPassword)
+    public function login(string $email, string $password, string $dateTime)
     {
-        $userPassword = hash('sha256', $userPassword);        
-        $user =  $this->userRepository->findByEmailAndPassword(
-            $userEmail,
-            $userPassword
+        $user = $this->userRepository->findByEmailAndPassword(
+            $email,
+            $password
         );
 
-        if ($user !== null) {
-            $txt  = $user->getId();
-            $txt .= '+' . $user->getEmail();
-            $txt .= '+user-agent'; //TODO: Core\Net\RawPHPClient->getUserAgent()
-            $txt .= '+IP'; //TODO: Core\Net\RawPHPClient->getUserIp()
-            $txt .= '+2022-02-02 02:02:05'; //TODO Core\System\DateTime->getDateTime();
+        if ($user !== NULL) {
+            $text  = $user->getId() . '+' . $this->netClient->getIp() . '+' .
+                   $this->netClient->getUserAgent() . '+' . $dateTime;
             
-            $this->sessionHelper->createToken($txt);
+            $token = hash('sha256', $text);
+            return $token;
         }
-
-        return $user;
+        else
+            return '';
     }
 }
