@@ -13,6 +13,22 @@ use Core\Auth\AuthRepository;
 
 final class AuthServiceTest extends TestCase
 {
+    private $mockUserRepository;
+    private $mockNetClient;
+    private $mockAuthRepository;
+
+    public function setUp(): void
+    {
+        $this->mockUserRepository = $this->getMockBuilder(UserRepository::class)
+            ->getMock();
+
+        $this->mockNetClient = $this->getMockBuilder(NetClient::class)
+            ->getMock();
+
+        $this->mockAuthRepository = $this->getMockBuilder(AuthRepository::class)
+            ->getMock();
+    }
+
     public function test_a_user_can_login()
     {
         // Given
@@ -29,39 +45,56 @@ final class AuthServiceTest extends TestCase
             $userAgent . '+' . $dateTime);
 
         // Expect
-        $mockUserRepository = $this->getMockBuilder(UserRepository::class)
-            ->getMock();
-        $mockUserRepository->expects($this->once())
+        $this->mockUserRepository->expects($this->once())
             ->method('findByEmailAndPassword')
             ->with($email, $pass)
             ->willReturn($user);
 
-        $mockNetClient = $this->getMockBuilder(NetClient::class)
-            ->getMock();
-        $mockNetClient->expects($this->once())
+        $this->mockNetClient->expects($this->once())
             ->method('getIP')
             ->willReturn($ip);
-        $mockNetClient->expects($this->once())
+        $this->mockNetClient->expects($this->once())
             ->method('getUserAgent')
             ->willReturn($userAgent);
 
-        $mockAuthRepository = $this->getMockBuilder(AuthRepository::class)
-            ->getMock();
 
-        $mockAuthRepository->expects($this->once())
+        $this->mockAuthRepository->expects($this->once())
             ->method('save')
             ->with($user, $expected);
 
         // When
         $authService = new AuthService(
-            $mockUserRepository,
-            $mockNetClient,
-            $mockAuthRepository
+            $this->mockUserRepository,
+            $this->mockNetClient,
+            $this->mockAuthRepository
         );
-        
+
         $actual      = $authService->login($email, $pass, $dateTime);
 
         // Then
         $this->assertEquals($expected, $actual);
+    }
+
+    public function test_a_user_con_logout()
+    {
+        // Given
+        $token = 'ABCD123';
+
+        // Expect
+        $this->mockAuthRepository->expects($this->once())
+            ->method('destroy')
+            ->with($token);
+
+        // When
+        $authService = new AuthService(
+            $this->mockUserRepository,
+            $this->mockNetClient,
+            $this->mockAuthRepository
+        );
+
+        $actual = $authService->logout($token);
+
+        // Then
+        $this->assertTrue($actual);
     }
 }

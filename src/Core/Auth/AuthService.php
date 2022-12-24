@@ -9,6 +9,7 @@ namespace Core\Auth;
 use Core\User\UserRepository;
 use Core\Net\NetClient;
 use Core\Auth\AuthRepository;
+use Exception;
 
 class AuthService
 {
@@ -42,5 +43,16 @@ class AuthService
         }
         else
             return '';
+    }
+
+    public function logout(string $token): bool
+    {
+        try {
+            $this->authRepository->destroy($token);
+        } catch(Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 }
