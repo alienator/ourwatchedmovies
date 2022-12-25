@@ -6,6 +6,7 @@
 
 declare(strict_types=1);
 
+use Core\Crypto\Crypto;
 use PHPUnit\Framework\TestCase;
 
 use Core\User\User;
@@ -26,10 +27,19 @@ final class UserServiceTest extends TestCase
 
         $mockUserRepository->expects($this->once())
             ->method('save')
-            ->with($user, hash('sha256', $password));
+            ->with($user, 'ABCD1234');
+
+        $mockCrypto = $this->getMockBuilder(Crypto::class)
+            ->getMock();
+        $mockCrypto->expects($this->once())
+            ->method('hash')
+            ->willReturn('ABCD1234');
 
         // When
-        $userServiceUnderTest = new UserService($mockUserRepository);
+        $userServiceUnderTest = new UserService(
+            $mockUserRepository,
+            $mockCrypto
+        );
         $userServiceUnderTest->add($user, $password);
     }
 
@@ -46,8 +56,11 @@ final class UserServiceTest extends TestCase
             ->method('save')
             ->with($user);
 
+        $mockCrypto = $this->getMockBuilder(Crypto::class)
+            ->getMock();
+
         // When
-        $userService = new UserService($mockUserRepository);
+        $userService = new UserService($mockUserRepository, $mockCrypto);
         $userService->disable($user);
 
         // Then

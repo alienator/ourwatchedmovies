@@ -10,18 +10,25 @@ use Core\User\UserRepository;
 use Core\Net\NetClient;
 use Core\Auth\AuthRepository;
 use Exception;
+use Core\Crypto\Crypto;
 
 class AuthService
 {
     private UserRepository $userRepository;
     private NetClient $netClient;
     private AuthRepository $authRepository;
+    private Crypto $crypto;
 
-    public function __construct($userRepository, $netClient, $authRepository)
-    {
+    public function __construct(
+        $userRepository,
+        $netClient,
+        $authRepository,
+        $crypto
+    ) {
         $this->userRepository = $userRepository;
-        $this->netClient = $netClient;
+        $this->netClient      = $netClient;
         $this->authRepository = $authRepository;
+        $this->crypto         = $crypto;
     }
 
     public function login(string $email, string $password, string $dateTime)
@@ -33,15 +40,14 @@ class AuthService
 
         if ($user !== NULL) {
             $text  = $user->getId() . '+' . $this->netClient->getIp() . '+' .
-                   $this->netClient->getUserAgent() . '+' . $dateTime;
-            
-            $token = hash('sha256', $text);
+                $this->netClient->getUserAgent() . '+' . $dateTime;
+
+            $token = $this->crypto->hash($text);
 
             $this->authRepository->save($user, $token);
-            
+
             return $token;
-        }
-        else
+        } else
             return '';
     }
 
@@ -49,7 +55,7 @@ class AuthService
     {
         try {
             $this->authRepository->destroy($token);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 

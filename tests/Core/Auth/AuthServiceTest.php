@@ -10,6 +10,7 @@ use Core\User\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Core\Net\NetClient;
 use Core\Auth\AuthRepository;
+use Core\Crypto\Crypto;
 
 final class AuthServiceTest extends TestCase
 {
@@ -27,6 +28,9 @@ final class AuthServiceTest extends TestCase
 
         $this->mockAuthRepository = $this->getMockBuilder(AuthRepository::class)
             ->getMock();
+
+        $this->mockCrypto = $this->getMockBuilder(Crypto::class)
+            ->getMock();
     }
 
     public function test_a_user_can_login()
@@ -41,8 +45,7 @@ final class AuthServiceTest extends TestCase
         $expected = 'ABCD123';
         $user     = new User(1, 'user name', $email);
 
-        $expected = hash('sha256', $user->getId() . '+' . $ip . '+' .
-            $userAgent . '+' . $dateTime);
+        $expected = 'ABCD123';
 
         // Expect
         $this->mockUserRepository->expects($this->once())
@@ -62,11 +65,16 @@ final class AuthServiceTest extends TestCase
             ->method('save')
             ->with($user, $expected);
 
+        $this->mockCrypto->expects($this->once())
+            ->method('hash')
+            ->willReturn('ABCD123');
+
         // When
         $authService = new AuthService(
             $this->mockUserRepository,
             $this->mockNetClient,
-            $this->mockAuthRepository
+            $this->mockAuthRepository,
+            $this->mockCrypto
         );
 
         $actual      = $authService->login($email, $pass, $dateTime);
@@ -89,7 +97,8 @@ final class AuthServiceTest extends TestCase
         $authService = new AuthService(
             $this->mockUserRepository,
             $this->mockNetClient,
-            $this->mockAuthRepository
+            $this->mockAuthRepository,
+            $this->mockCrypto
         );
 
         $actual = $authService->logout($token);
