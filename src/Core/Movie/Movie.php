@@ -16,6 +16,7 @@ class Movie
     private string $releaseDate;
     private string $imagePath;
     private float $globalScore;
+    private string $moreInfo;
     private string $watchedDate;
     private float $ourScore;
 
@@ -26,6 +27,7 @@ class Movie
         string $releaseDate = '',
         string $imagePath   = '',
         float  $globalScore = 0.0,
+        string $moreInfo    = '',
         string $watchedDate = '',
         float  $ourScore    = 0.0
     ) {
@@ -35,6 +37,7 @@ class Movie
         $this->releaseDate = $releaseDate;
         $this->imagePath   = $imagePath;
         $this->globalScore = $globalScore;
+        $this->moreInfo    = $moreInfo;
         $this->watchedDate = $watchedDate;
         $this->ourScore    = $ourScore;
     }

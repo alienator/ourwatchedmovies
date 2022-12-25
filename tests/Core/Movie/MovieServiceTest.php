@@ -127,6 +127,7 @@ final class MovieServiceTest extends TestCase
             '2002-2-2',
             'img.png',
             6.6,
+            'http://',
             '',
             0.0
         );

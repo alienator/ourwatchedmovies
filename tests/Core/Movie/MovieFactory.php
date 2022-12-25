@@ -23,6 +23,7 @@ class MovieFactory
             '/images/movie1.jpg',
             '2022-01-01',
             7.8,
+            'http://link-more-info.com',
             '2022-02-01',
             6.2
         );
@@ -34,6 +35,7 @@ class MovieFactory
             '/images/movie1.jpg',
             '2022-01-01',
             7.8,
+            'https://inmdb.com/some-movie',
             '2022-02-01',
             6.2
         );
@@ -45,6 +47,7 @@ class MovieFactory
             '/images/movie1.jpg',
             '2022-01-01',
             7.8,
+            'http://movies.com',
             '2022-02-01',
             6.2
         );
@@ -61,6 +64,7 @@ class MovieFactory
             '/images/movie1,jpg',
             '2022-01-01',
             6.2,
+            'http://link-more-info.com',
             '2022-02-01',
             2.2
         );
