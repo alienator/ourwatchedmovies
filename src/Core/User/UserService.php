@@ -23,4 +23,11 @@ class UserService
         $password = hash('sha256', $password);
         $this->userRepository->save($user, $password);
     }
+
+    public function disable(User $user)
+    {
+        
+        $user->disable();
+        $this->userRepository->save($user);
+    }
 }

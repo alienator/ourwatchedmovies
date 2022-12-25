@@ -32,4 +32,25 @@ final class UserServiceTest extends TestCase
         $userServiceUnderTest = new UserService($mockUserRepository);
         $userServiceUnderTest->add($user, $password);
     }
+
+    public function test_it_should_disable_a_user(): void
+    {
+        // Given
+        $user = new User(1, 'name', 'some@email.com');
+
+        // Expect
+        $mockUserRepository = $this->getMockBuilder(UserRepository::class)
+            ->getMock();
+
+        $mockUserRepository->expects($this->once())
+            ->method('save')
+            ->with($user);
+
+        // When
+        $userService = new UserService($mockUserRepository);
+        $userService->disable($user);
+
+        // Then
+        $this->assertTrue($user->isDisable());
+    }
 }

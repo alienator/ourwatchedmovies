@@ -13,12 +13,14 @@ class User
     private int $id;
     private string $name;
     private string $email;
+    private bool $disable;
 
     public function __construct($id = 0, $name = '', $email = '')
     {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
+        $this->disable = false;
     }
 
     public function getId(): int
@@ -34,5 +36,15 @@ class User
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function disable()
+    {
+        $this->disable = true;
+    }
+
+    public function isDisable()
+    {
+        return $this->disable;
     }
 }
