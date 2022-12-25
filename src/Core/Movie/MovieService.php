@@ -42,4 +42,14 @@ class MovieService
     {
         $this->localRepository->save($movie);
     }
+
+    public function findLocal($criteria)
+    {
+        return $this->localRepository->find($criteria);
+    }
+
+    public function findRemote($criteria)
+    {
+        return $this->remoteRepository->find($criteria);
+    }
 }

@@ -155,4 +155,52 @@ final class MovieServiceTest extends TestCase
             $movie
         );
     }
+
+    public function test_it_should_find_only_in_local()
+    {
+        // Given
+        $criteria = 'something';
+
+        // Expect
+        $mockLocal = $this->getMockBuilder(MovieRepository::class)
+            ->getMock();
+
+        $mockLocal->expects($this->once())
+            ->method('find')
+            ->with($criteria);
+
+        $mockRemote = $this->getMockBuilder(MovieRepository::class)
+                           ->getMock();
+
+        $mockRemote->expects($this->never())
+                   ->method('find');
+
+        // When
+        $movieService = new MovieService($mockLocal, $mockRemote);
+        $movieService->findLocal($criteria);
+    }
+
+    public function test_it_should_find_only_in_remote()
+    {
+        // Given
+        $criteria = 'something';
+
+        // Expect
+        $mockRemote = $this->getMockBuilder(MovieRepository::class)
+            ->getMock();
+
+        $mockRemote->expects($this->once())
+            ->method('find')
+            ->with($criteria);
+
+        $mockLocal = $this->getMockBuilder(MovieRepository::class)
+                           ->getMock();
+
+        $mockLocal->expects($this->never())
+                   ->method('find');
+
+        // When
+        $movieService = new MovieService($mockLocal, $mockRemote);
+        $movieService->findRemote($criteria);
+    }
 }
