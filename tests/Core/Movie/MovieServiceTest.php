@@ -117,7 +117,7 @@ final class MovieServiceTest extends TestCase
         $this->assertEquals($expectedMovies, $actualMovies);
     }
 
-    public function test_it_should_add_a_movie_to_local_with_no_comments_or_score()
+    public function test_it_should_add_a_movie_to_local_no_comments_or_score()
     {
         // Given
         $movie = new Movie(
@@ -170,10 +170,10 @@ final class MovieServiceTest extends TestCase
             ->with($criteria);
 
         $mockRemote = $this->getMockBuilder(MovieRepository::class)
-                           ->getMock();
+            ->getMock();
 
         $mockRemote->expects($this->never())
-                   ->method('find');
+            ->method('find');
 
         // When
         $movieService = new MovieService($mockLocal, $mockRemote);
@@ -194,13 +194,55 @@ final class MovieServiceTest extends TestCase
             ->with($criteria);
 
         $mockLocal = $this->getMockBuilder(MovieRepository::class)
-                           ->getMock();
+            ->getMock();
 
         $mockLocal->expects($this->never())
-                   ->method('find');
+            ->method('find');
 
         // When
         $movieService = new MovieService($mockLocal, $mockRemote);
         $movieService->findRemote($criteria);
+    }
+
+    public function test_it_should_return_ID_when_movie_is_inserted_to_local()
+    {
+        // Given
+        $movie = new Movie(
+            0,
+            'title',
+            'summary',
+            '200-01-01',
+            'cover.png',
+            5,
+            'http://',
+            '2020-05-05',
+            8
+        );
+
+        // Expect
+        $mockLocalRepository = $this->getMockBuilder(MovieRepository::class)
+            ->getMock();
+        $mockLocalRepository->expects($this->once())
+            ->method('save')
+            ->with($movie);
+        $mockLocalRepository->expects($this->once())
+            ->method('getLastInsertedId')
+            ->willReturn(1001);
+
+        $mockRemoteRepository = $this->getMockBuilder(MovieRepository::class)
+            ->getMock();
+        $mockRemoteRepository->expects($this->never())
+            ->method('save');
+
+        // When
+        $movieService = new MovieService(
+            $mockLocalRepository,
+            $mockRemoteRepository
+        );
+
+        $newId = $movieService->add($movie);
+
+        // Then
+        $this->assertTrue(($newId > 0));
     }
 }

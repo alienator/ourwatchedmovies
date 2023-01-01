@@ -13,4 +13,5 @@ interface MovieRepository
     public function find(string $criteria);
     public function findById(int $id);
     public function save(Movie $movie);
+    public function getLastInsertedId(): int;
 }

@@ -38,9 +38,10 @@ class MovieService
         return $movie;
     }
 
-    public function add(Movie $movie): void
+    public function add(Movie $movie): int
     {
-        $this->localRepository->save($movie);
+       $this->localRepository->save($movie);
+       return $this->localRepository->getLastInsertedId();
     }
 
     public function findLocal($criteria)
