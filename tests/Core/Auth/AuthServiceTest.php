@@ -17,6 +17,7 @@ final class AuthServiceTest extends TestCase
     private $mockUserRepository;
     private $mockNetClient;
     private $mockAuthRepository;
+    private $mockCrypto;
 
     public function setUp(): void
     {

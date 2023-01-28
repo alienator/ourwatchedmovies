@@ -1,4 +1,5 @@
 {
+    "name": "alienator/ourwatchedmovies",
     "autoload": {
         "psr-4": {
             "Core\\": "src/Core/"
