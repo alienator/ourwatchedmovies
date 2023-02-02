@@ -186,12 +186,18 @@ final class MovieServiceTest extends TestCase
         $criteria = 'something';
 
         // Expect
+        $expected = [
+            new Movie(1, 'tit', 'desc', '200', 'image.png', 5, 'link', '', 0),
+            new Movie(1, 'tit', 'desc', '200', 'image.png', 5, 'link', '', 0),
+        ];
+
         $mockRemote = $this->getMockBuilder(MovieRepository::class)
             ->getMock();
 
         $mockRemote->expects($this->once())
             ->method('find')
-            ->with($criteria);
+            ->with($criteria)
+            ->willReturn($expected);
 
         $mockLocal = $this->getMockBuilder(MovieRepository::class)
             ->getMock();
@@ -201,7 +207,10 @@ final class MovieServiceTest extends TestCase
 
         // When
         $movieService = new MovieService($mockLocal, $mockRemote);
-        $movieService->findRemote($criteria);
+        $res = $movieService->findRemote($criteria);
+        $this->assertEquals($expected, $res);
+        $this->assertEquals($expected[0]->getId(), $res[0]->getId());
+        
     }
 
     public function test_it_should_return_ID_when_movie_is_inserted_to_local()

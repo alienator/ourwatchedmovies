@@ -43,6 +43,87 @@ class Movie
     }
 
     public function setId($id) {
-        $this->$id;
+        $this->id = $id;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setTitle($tit) {
+        $this->title = $tit;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+   public function setSummary($summary) {
+        $this->summary = $summary;
+    }
+
+    public function getSummary()
+    {
+        return $this->summary;
+    } 
+
+    public function setReleaseDate($date) {
+        $this->releaseDate = $date;
+    }
+
+    public function getReleaseDate()
+    {
+        return $this->releaseDate;
+    }
+
+    public function setImagePath($image) {
+        $this->imagePath = $image;
+    }
+
+    public function getImagePath()
+    {
+        return $this->imagePath;
+    }
+
+    public function setGlobalScore($score)
+    {
+        $this->globalScore = $score;
+    }
+
+    public function getGlobalScore()
+    {
+        return $this->globalScore;
+    }
+
+    public function setMoreInfo($info)
+    {
+        $this->moreInfo = $info;
+    }
+
+    public function getMoreInfo()
+    {
+        return $this->moreInfo;
+    }
+
+    public function setWatchedDate($date)
+    {
+        $this->watchedDate = $date;
+    }
+
+    public function getWatchedDate()
+    {
+        return $this->watchedDate;
+    }
+
+    public function setOurScore($score)
+    {
+        $this->ourScore = $score;
+    }
+
+    public function getOurScore()
+    {
+        return $this->ourScore;
     }
 }
