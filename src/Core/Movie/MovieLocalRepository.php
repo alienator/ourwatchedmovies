@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace Core\Movie;
 
-interface MovieRepository
+use Core\Movie\MovieRemoteRepository;
+
+interface MovieLocalRepository extends MovieRemoteRepository
 {
-    public function find(string $criteria);
-    public function findById(int $id);
     public function save(Movie $movie);
     public function getLastInsertedId(): int;
 }

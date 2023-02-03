@@ -9,7 +9,8 @@ declare(strict_types=1);
 use Core\Movie\Movie;
 use PHPUnit\Framework\TestCase;
 
-use Core\Movie\MovieRepository;
+use Core\Movie\MovieLocalRepository;
+use Core\Movie\MovieRemoteRepository;
 use Core\Movie\MovieService;
 
 use Tests\Core\Movie\MovieFactory;
@@ -24,14 +25,14 @@ final class MovieServiceTest extends TestCase
         $expected = MovieFactory::createOne();
 
         // Expect
-        $mockLocalRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockLocalRepository = $this->getMockBuilder(MovieLocalRepository::class)
             ->getMock();
         $mockLocalRepository->expects($this->once())
             ->method('findById')
             ->with($id)
             ->willReturn(NULL);
 
-        $mockRemoteRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockRemoteRepository = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
         $mockRemoteRepository->expects($this->once())
             ->method('findById')
@@ -57,14 +58,14 @@ final class MovieServiceTest extends TestCase
         $expected = MovieFactory::createOne();
 
         // Expect
-        $mockLocalRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockLocalRepository = $this->getMockBuilder(MovieLocalRepository::class)
             ->getMock();
         $mockLocalRepository->expects($this->once())
             ->method('findById')
             ->with($id)
             ->willReturn($expected);
 
-        $mockRemoteRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockRemoteRepository = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
 
         // When
@@ -92,14 +93,14 @@ final class MovieServiceTest extends TestCase
         );
 
         // Expect
-        $mockLocalRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockLocalRepository = $this->getMockBuilder(MovieLocalRepository::class)
             ->getMock();
         $mockLocalRepository->expects($this->once())
             ->method('find')
             ->with($criteria)
             ->willReturn($expectedLocalMovies);
 
-        $mockRemoteRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockRemoteRepository = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
         $mockRemoteRepository->expects($this->once())
             ->method('find')
@@ -134,16 +135,14 @@ final class MovieServiceTest extends TestCase
 
 
         // Expect
-        $mockLocalRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockLocalRepository = $this->getMockBuilder(MovieLocalRepository::class)
             ->getMock();
         $mockLocalRepository->expects($this->once())
             ->method('save')
             ->with($movie);
 
-        $mockRemoteRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockRemoteRepository = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
-        $mockRemoteRepository->expects($this->never())
-            ->method('save');
 
         // When
         $movieServiceUnderTest = new MovieService(
@@ -162,14 +161,14 @@ final class MovieServiceTest extends TestCase
         $criteria = 'something';
 
         // Expect
-        $mockLocal = $this->getMockBuilder(MovieRepository::class)
+        $mockLocal = $this->getMockBuilder(MovieLocalRepository::class)
             ->getMock();
 
         $mockLocal->expects($this->once())
             ->method('find')
             ->with($criteria);
 
-        $mockRemote = $this->getMockBuilder(MovieRepository::class)
+        $mockRemote = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
 
         $mockRemote->expects($this->never())
@@ -191,7 +190,7 @@ final class MovieServiceTest extends TestCase
             new Movie(1, 'tit', 'desc', '200', 'image.png', 5, 'link', '', 0),
         ];
 
-        $mockRemote = $this->getMockBuilder(MovieRepository::class)
+        $mockRemote = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
 
         $mockRemote->expects($this->once())
@@ -199,7 +198,7 @@ final class MovieServiceTest extends TestCase
             ->with($criteria)
             ->willReturn($expected);
 
-        $mockLocal = $this->getMockBuilder(MovieRepository::class)
+        $mockLocal = $this->getMockBuilder(MovieLocalRepository::class)
             ->getMock();
 
         $mockLocal->expects($this->never())
@@ -229,7 +228,7 @@ final class MovieServiceTest extends TestCase
         );
 
         // Expect
-        $mockLocalRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockLocalRepository = $this->getMockBuilder(MovieLocalRepository::class)
             ->getMock();
         $mockLocalRepository->expects($this->once())
             ->method('save')
@@ -238,10 +237,8 @@ final class MovieServiceTest extends TestCase
             ->method('getLastInsertedId')
             ->willReturn(1001);
 
-        $mockRemoteRepository = $this->getMockBuilder(MovieRepository::class)
+        $mockRemoteRepository = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
-        $mockRemoteRepository->expects($this->never())
-            ->method('save');
 
         // When
         $movieService = new MovieService(
