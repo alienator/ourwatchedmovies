@@ -10,7 +10,7 @@ namespace Core\Movie;
 
 class Movie
 {
-    private int $id;
+    private string $id;
     private string $title;
     private string $summary;
     private string $releaseDate;
@@ -21,7 +21,7 @@ class Movie
     private float $ourScore;
 
     public function __construct(
-        int    $id          = 0,
+        string $id          = '',
         string $title       = '',
         string $summary     = '',
         string $releaseDate = '',

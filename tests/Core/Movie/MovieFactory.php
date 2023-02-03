@@ -17,7 +17,7 @@ class MovieFactory
         $movies = array();
 
         $movies[] = new Movie(
-            1,
+            'AAABBBB123',
             'title1',
             'Lorem ipsum dolor sit amet',
             '/images/movie1.jpg',
@@ -29,7 +29,7 @@ class MovieFactory
         );
 
         $movies[] =  new Movie(
-            2,
+            'BBBBBBBB123',
             'title2',
             'Lorem ipsum dolor sit amet',
             '/images/movie1.jpg',
@@ -41,7 +41,7 @@ class MovieFactory
         );
 
         $movies[] =  new Movie(
-            3,
+            'AAABBBB123CCCCC',
             'title3',
             'Lorem ipsum dolor sit amet',
             '/images/movie1.jpg',
@@ -58,7 +58,7 @@ class MovieFactory
     public static function createOne()
     {
         return new Movie(
-            1,
+            'AAABBBB123',
             'title',
             'Lorem ipsum dolor sit amet',
             '/images/movie1,jpg',

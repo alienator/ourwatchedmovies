@@ -11,5 +11,5 @@ namespace Core\Movie;
 interface MovieRemoteRepository
 {
     public function find(string $criteria);
-    public function findById(int $id);
+    public function findById(string $id);
 }

@@ -20,7 +20,7 @@ final class MovieServiceTest extends TestCase
     public function test_it_should_find_one_remote_movie_by_id()
     {
         // Given
-        $id = 1;
+        $id = 'AAA';
 
         $expected = MovieFactory::createOne();
 
@@ -53,7 +53,7 @@ final class MovieServiceTest extends TestCase
     public function test_it_should_find_one_local_movie_by_id()
     {
         // Given
-        $id = 1;
+        $id = 'AAA';
 
         $expected = MovieFactory::createOne();
 
@@ -122,7 +122,7 @@ final class MovieServiceTest extends TestCase
     {
         // Given
         $movie = new Movie(
-            0,
+            '',
             'tit',
             'something',
             '2002-2-2',
@@ -186,8 +186,8 @@ final class MovieServiceTest extends TestCase
 
         // Expect
         $expected = [
-            new Movie(1, 'tit', 'desc', '200', 'image.png', 5, 'link', '', 0),
-            new Movie(1, 'tit', 'desc', '200', 'image.png', 5, 'link', '', 0),
+            new Movie('AAA', 'tit', 'desc', '200', 'image.png', 5, 'link', '', 0),
+            new Movie('BBB', 'tit', 'desc', '200', 'image.png', 5, 'link', '', 0),
         ];
 
         $mockRemote = $this->getMockBuilder(MovieRemoteRepository::class)
@@ -216,7 +216,7 @@ final class MovieServiceTest extends TestCase
     {
         // Given
         $movie = new Movie(
-            0,
+            '',
             'title',
             'summary',
             '200-01-01',
