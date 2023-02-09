@@ -17,7 +17,7 @@ final class ScoreServiceTest extends TestCase
     public function test_it_should_add_a_score()
     {
         // Given
-        $score = new Score(0, 1, 1, 5.5, '2002-2-2');
+        $score = new Score(0, 'AABB11', 1, 5.5, '2002-2-2');
 
         // Expect
         $mockScoreRepository = $this->getMockBuilder(ScoreRepository::class)
@@ -28,6 +28,6 @@ final class ScoreServiceTest extends TestCase
 
         // When
         $scoreServiceUnderTest = new ScoreService($mockScoreRepository);
-        $scoreServiceUnderTest->add($score);
+        $scoreServiceUnderTest->save($score);
     }
 }

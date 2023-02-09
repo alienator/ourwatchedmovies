@@ -12,12 +12,12 @@ class ScoreService
 {
     private ScoreRepository $scoreRepository;
 
-    public function __construct(ScoreRepository $scoreRepository)
+    public function __construct($scoreRepository)
     {
         $this->scoreRepository = $scoreRepository;
     }
 
-    public function add(Score $score)
+    public function save(Score $score)
     {
         $this->scoreRepository->save($score);
     }

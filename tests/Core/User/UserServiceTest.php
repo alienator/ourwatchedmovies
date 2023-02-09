@@ -40,7 +40,7 @@ final class UserServiceTest extends TestCase
             $mockUserRepository,
             $mockCrypto
         );
-        $userServiceUnderTest->add($user, $password);
+        $userServiceUnderTest->save($user, $password);
     }
 
     public function test_it_should_disable_a_user(): void

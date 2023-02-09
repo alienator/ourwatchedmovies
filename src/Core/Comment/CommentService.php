@@ -16,7 +16,7 @@ class CommentService
         $this->commentRepositroy = $commentRepository;
     }
     
-    public function add(Comment $comment)
+    public function save(Comment $comment)
     {
         $this->commentRepositroy->save($comment);
     }

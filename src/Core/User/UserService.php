@@ -21,7 +21,7 @@ class UserService
         $this->crypto         = $crypto;
     }
 
-    public function add(User $user, string $password)
+    public function save(User $user, string $password)
     {
         $password = $this->crypto->hash($password);
         $this->userRepository->save($user, $password);

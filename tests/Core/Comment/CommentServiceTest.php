@@ -17,7 +17,7 @@ final class CommentServiceTest extends TestCase
     public function test_it_should_add_a_comment()
     {
         // Given
-        $comment = new Comment(0, 1, 1, 'some comment', '2002-2-2');
+        $comment = new Comment(0, 'AABB11', 1, 'some comment', '2002-2-2');
 
         // Expect
         $mockCommentRepository = $this->getMockBuilder(CommentRepository::class)
@@ -28,6 +28,6 @@ final class CommentServiceTest extends TestCase
 
         // When
         $commentServiceUnderTest = new CommentService($mockCommentRepository);
-        $commentServiceUnderTest->add($comment);
+        $commentServiceUnderTest->save($comment);
     }
 }
