@@ -31,14 +31,14 @@ class MovieService
     {
         $movie = $this->localRepository->findById($id);
 
-        if ($movie === NULL) {
+        if (empty($movie->getId())) {
             $movie = $this->remoteRepository->findById($id);
         }
 
         return $movie;
     }
 
-    public function add(Movie $movie): int
+    public function add(Movie $movie): string
     {
        $this->localRepository->save($movie);
        return $this->localRepository->getLastInsertedId();

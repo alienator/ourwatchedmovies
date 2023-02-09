@@ -13,5 +13,5 @@ use Core\Movie\MovieRemoteRepository;
 interface MovieLocalRepository extends MovieRemoteRepository
 {
     public function save(Movie $movie);
-    public function getLastInsertedId(): int;
+    public function getLastInsertedId(): string;
 }

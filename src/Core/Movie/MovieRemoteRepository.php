@@ -10,6 +10,13 @@ namespace Core\Movie;
 
 interface MovieRemoteRepository
 {
-    public function find(string $criteria);
-    public function findById(string $id);
+    /**
+     * @return array of Movies
+     */
+    public function find(string $criteria): array;
+
+    /**
+     * @return a Movie
+     */
+    public function findById(string $id): Movie; 
 }

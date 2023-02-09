@@ -30,7 +30,7 @@ final class MovieServiceTest extends TestCase
         $mockLocalRepository->expects($this->once())
             ->method('findById')
             ->with($id)
-            ->willReturn(NULL);
+            ->willReturn(new Movie('', '', '', '', '', 0.0, '', '', 0.0));
 
         $mockRemoteRepository = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
@@ -209,7 +209,6 @@ final class MovieServiceTest extends TestCase
         $res = $movieService->findRemote($criteria);
         $this->assertEquals($expected, $res);
         $this->assertEquals($expected[0]->getId(), $res[0]->getId());
-        
     }
 
     public function test_it_should_return_ID_when_movie_is_inserted_to_local()
@@ -235,7 +234,7 @@ final class MovieServiceTest extends TestCase
             ->with($movie);
         $mockLocalRepository->expects($this->once())
             ->method('getLastInsertedId')
-            ->willReturn(1001);
+            ->willReturn('AABB11');
 
         $mockRemoteRepository = $this->getMockBuilder(MovieRemoteRepository::class)
             ->getMock();
@@ -249,6 +248,6 @@ final class MovieServiceTest extends TestCase
         $newId = $movieService->add($movie);
 
         // Then
-        $this->assertTrue(($newId > 0));
+        $this->assertNotEmpty($newId);
     }
 }
