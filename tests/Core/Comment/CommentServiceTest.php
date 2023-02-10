@@ -20,9 +20,12 @@ final class CommentServiceTest extends TestCase
      */
     private MockObject $mockRepository;
 
+    private CommentService $serviceUnderTest;
+    
     public function setup(): void
     {
         $this->mockRepository = $this->createMock(CommentRepository::class);
+        $this->serviceUnderTest = new CommentService($this->mockRepository);
     }
 
     public function test_it_should_add_a_comment()
@@ -36,8 +39,7 @@ final class CommentServiceTest extends TestCase
             ->with($comment);
 
         // When
-        $commentServiceUnderTest = new CommentService($this->mockRepository);
-        $commentServiceUnderTest->save($comment);
+        $this->serviceUnderTest->save($comment);
     }
 
     public function test_it_should_find_all_comments_for_a_movie()
@@ -57,7 +59,7 @@ final class CommentServiceTest extends TestCase
             ->willReturn($expected);
 
         // When
-        $actual = $this->mockRepository->findByMovieId($movieId);
+        $actual = $this->serviceUnderTest->findByMovieId($movieId);
 
         // Then
         $this->assertEquals($expected, $actual);
@@ -76,7 +78,7 @@ final class CommentServiceTest extends TestCase
             ->willReturn($expected);
 
         // When
-        $actual = $this->mockRepository->findById($commentId);
+        $actual = $this->serviceUnderTest->findById($commentId);
 
         // Then
         $this->assertEquals($expected, $actual);

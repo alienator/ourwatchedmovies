@@ -21,4 +21,14 @@ class ScoreService
     {
         $this->scoreRepository->save($score);
     }
+
+    public function findByMovieId(string $movieId): array
+    {
+        return $this->scoreRepository->findByMovieId($movieId);
+    }
+
+    public function findById(int $id): Score
+    {
+        return $this->scoreRepository->findById($id);
+    }
 }

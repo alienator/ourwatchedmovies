@@ -20,4 +20,14 @@ class CommentService
     {
         $this->commentRepositroy->save($comment);
     }
+
+    public function findByMovieId(string $movieId): array
+    {
+        return $this->commentRepositroy->findByMovieId($movieId);
+    }
+
+    public function findById(int $id): Comment
+    {
+        return $this->commentRepositroy->findById($id);
+    }
 }
