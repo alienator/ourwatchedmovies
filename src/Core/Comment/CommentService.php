@@ -11,7 +11,7 @@ class CommentService
 {
     private CommentRepository $commentRepositroy;
 
-    public function __construct($commentRepository)
+    public function __construct(CommentRepository $commentRepository)
     {
         $this->commentRepositroy = $commentRepository;
     }

@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Core\Score\Score;
 use Core\Score\ScoreRepository;
 use Core\Score\ScoreService;
+use PHPUnit\Framework\MockObject\MockObject;
 
 final class ScoreServiceTest extends TestCase
 {
@@ -20,6 +21,9 @@ final class ScoreServiceTest extends TestCase
         $score = new Score(0, 'AABB11', 1, 5.5, '2002-2-2');
 
         // Expect
+        /**
+         * @var ScoreRepository&MockObject
+         */
         $mockScoreRepository = $this->getMockBuilder(ScoreRepository::class)
             ->getMock();
         $mockScoreRepository->expects($this->once())
