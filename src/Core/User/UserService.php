@@ -33,4 +33,9 @@ class UserService
         $user->disable();
         $this->userRepository->save($user);
     }
+
+    public function findById(int $id): User
+    {
+        return $this->userRepository->findById($id);
+    }
 }
