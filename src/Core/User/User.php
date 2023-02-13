@@ -13,13 +13,15 @@ class User
     private int $id;
     private string $name;
     private string $email;
+    private string $imagePath;
     private bool $disable;
 
-    public function __construct($id = 0, $name = '', $email = '')
+    public function __construct($id = 0, $name = '', $email = '', $imagePath = '')
     {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
+        $this->imagePath = $imagePath;
         $this->disable = false;
     }
 
@@ -51,6 +53,16 @@ class User
     public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
+
+    public function setImagePath(string $imagePath): void
+    {
+        $this->imagePath = $imagePath;
+    }
+
+    public function getImagePath(): string
+    {
+        return $this->imagePath;
     }
     
     public function disable()
